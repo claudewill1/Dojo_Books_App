@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Books</title>
+</head>
+<body>
+    <div class="border border-dark d-flex flex-row p-5 w-auto wrapper">
+        <div class="container d-flex flex-row justify-content-center w-75 h-auto">
+            <div id="new" class="border border-dark bg-dark container d-flex flex-column w-50 p-5 text-light">
+                <h1 class="text-primary">New Book</h1>
+                <form action="/createBook" method="post">
+                    <div class="form-group inline-block">
+                        <label for="name">Name:</label>
+                        <input type="text" name="name" class="w-25">
+                        <input class="btn btn-primary rounded-pill text-dark" type="button" value="Add Book">
+                    </div>
+                </form>
+            </div>
+            <div id="all" class="border border-dark container d-flex flex-column w-50 p-5">
+                <h1>All Books</h1>
+                <div class="border border-dark w-75 d-flex flex-column justify-content-center align-text-cener">
+                    {% for book in all_books %}
+                        <a href="#">{{book.title}}</a>
+                    {% endfor %}
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
