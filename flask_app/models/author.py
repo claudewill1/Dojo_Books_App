@@ -9,6 +9,7 @@ class Author:
         self.created_at = data["created_at"]
         self.updated_at = data["updated_at"]
         self.favorite_books = []
+        self.unfavoriteBooks = []
     @classmethod
     def createAuthor(cls,data):
         query = "INSERT INTO authors (name, created_at, updated_at) VALUES (%(name)s,NOW(),NOW());"
@@ -33,7 +34,7 @@ class Author:
     
     @classmethod
     def getAuthorsFavoriteBooks(cls,id):
-        query = "SELECT * FROM books AS b ON favorites AS f ON f.book_id = b.id LEFT JOIN authors AS a ON f.author_id = a.id WHERE b.id = %(id)s;"
+        query = "SELECT * FROM books AS b LEFT JOIN favorites AS f ON f.book_id = b.id LEFT JOIN authors AS a ON f.author_id = a.id WHERE b.id = %(id)s;"
         data = {
             "id": id
         }
@@ -48,3 +49,21 @@ class Author:
         books.favorite_books.append(book.Book(favorites_data))
 
         return books
+
+    @classmethod
+    def getBooksNotFavoritedByAuthor(cls,id):
+        query = "SELECT title FROM books AS b LEFT JOIN favorites AS f ON f.book_id = b.id LEFT JOIN authors AS a on f.author_id = a.id WHERE  b.id = %(id)s;"
+        data = {
+            "id": id
+        }
+        results = connectToMySQL(cls.db).query_db(query,data)
+        books = cls(results[0])
+        for row_from_db in results:
+            unfavorites = {
+                "id": row_from_db["books.id"],
+                "title": row_from_db["books.title"]
+            }
+        if unfavorites not in cls.favorite_books:
+            books.unfavoriteBooks.append(unfavorites)
+        return books
+

@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, session
 from flask_app.models import author, book
 from flask_app import app
-from flask_mysql.crud.Books.flask_app.models import author
+from flask_app.models import author
 
 @app.route("/")
 def index():
@@ -25,10 +25,14 @@ def addAuthor():
 @app.route("/author_show/<int:author_id>")
 def viewAuthorDetails(author_id):
     data = {
-        "id": author_id
+        "author_id": author_id
 
     }
     return render_template("author_show.html", author = author.Author.getOneAuthor(data), favoriteBooks = author.Author.getAuthorsFavoriteBooks(data))
 
-@app.route("/author_show/<id:book_id")
-
+@app.route("/author_show/<int:book_id>")
+def viewUnfavoredBooks(book_id):
+    data = {
+        "book_id": book_id
+    }
+    return render_template("author_show.html",unFavorites = author.Author.getBooksNotFavoritedByAuthor(data))
